@@ -2,4 +2,5 @@
 Em desenvolvimento
 
 ### download aplicativo (apenas android)
-[ionic-pokedex.zip](https://github.com/luczz1/ionic-mobile-pokedex/files/10037732/ionic-pokedex.zip)
+[ionic-pokedex.zip](https://github.com/luczz1/ionic-mobile-pokedex/files/10042380/ionic-pokedex.zip)
+
