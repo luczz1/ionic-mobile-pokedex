@@ -1,6 +1,6 @@
 # ionic-mobile-pokedex
-Em desenvolvimento
+Pokédex simples para android, feito com ionic angular.
 
-### download aplicativo (apenas android)
-[ionic-pokedex.zip](https://github.com/luczz1/ionic-mobile-pokedex/files/10042380/ionic-pokedex.zip)
+## Download do aplicativo (apenas android)
 
+[ionic-pokedex.zip](https://github.com/luczz1/ionic-mobile-pokedex/files/10045075/ionic-pokedex.zip)
