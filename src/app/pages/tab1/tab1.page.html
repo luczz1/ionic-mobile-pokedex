@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" *ngIf="!showDetails">
+<ion-content [fullscreen]="true" [hidden]="showDetails">
   <ion-searchbar
     (ionChange)="filterPokemonList($event)"
     placeholder="Pesquisar por nome..."
@@ -14,11 +14,12 @@
     <ion-row>
       <ion-col
         class="ion-padding"
+        style="border-bottom: 1px solid var(--ion-color-light);"
         size="4"
         *ngFor="let poke of filteredPokemonList.length > 0 ? filteredPokemonList : pokemonList; index as i"
         (click)="getPokemonDetails(poke.id)"
       >
-        <p>{{poke.name | titlecase}}</p>
+        <p style="font-size: 14px;">{{poke.name | titlecase}}</p>
         <img
           src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{poke.id}}.png"
           alt=""
@@ -30,10 +31,10 @@
 
 <ion-content [fullscreen]="true" *ngIf="showDetails">
   <!-- *ngFor="let poke of pokemonDetails; -->
+  <ion-button class="button-transparent" (click)="toggleShowDetails()"
+    ><ion-icon name="arrow-back-outline"></ion-icon
+  ><span style="text-indent: 8px; text-transform: capitalize !important;">Voltar</span></ion-button>
   <ion-card *ngFor="let details of pokemonDetails" class="ion-text-center">
-    <ion-button color="light" (click)="toggleShowDetails()"
-      ><ion-icon name="arrow-back-outline"></ion-icon
-    ></ion-button>
     <ion-slides pager="true">
       <ion-slide>
         <img

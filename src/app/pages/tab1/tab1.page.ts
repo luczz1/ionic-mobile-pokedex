@@ -73,6 +73,5 @@ export class Tab1Page implements OnInit {
 
   public toggleShowDetails() {
     this.showDetails = !this.showDetails;
-    this.filteredPokemonList = [];
   }
 }
