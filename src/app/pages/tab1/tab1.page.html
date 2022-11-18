@@ -1,0 +1,143 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title> Pokédex </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" *ngIf="!showDetails">
+  <ion-searchbar
+    (ionChange)="filterPokemonList($event)"
+    placeholder="Pesquisar por nome..."
+    color="light"
+  ></ion-searchbar>
+  <ion-grid class="ion-text-center">
+    <ion-row>
+      <ion-col
+        class="ion-padding"
+        size="4"
+        *ngFor="let poke of filteredPokemonList.length > 0 ? filteredPokemonList : pokemonList; index as i"
+        (click)="getPokemonDetails(poke.id)"
+      >
+        <p>{{poke.name | titlecase}}</p>
+        <img
+          src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{poke.id}}.png"
+          alt=""
+        />
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-content [fullscreen]="true" *ngIf="showDetails">
+  <!-- *ngFor="let poke of pokemonDetails; -->
+  <ion-card *ngFor="let details of pokemonDetails" class="ion-text-center">
+    <ion-button color="light" (click)="toggleShowDetails()"
+      ><ion-icon name="arrow-back-outline"></ion-icon
+    ></ion-button>
+    <ion-slides pager="true">
+      <ion-slide>
+        <img
+          style="min-width: 50%; max-width: 50% !important"
+          alt="Sprite de frente"
+          src="{{details.sprites.front_default}}"
+        />
+      </ion-slide>
+      <ion-slide>
+        <img
+          style="min-width: 50%; max-width: 50% !important"
+          alt="Sprite de costas"
+          src="{{details.sprites.back_default}}"
+        />
+      </ion-slide>
+      <ion-slide>
+        <img
+          style="min-width: 50%; max-width: 50% !important"
+          alt="Sprite de frente shiny"
+          src="{{details.sprites.front_shiny}}"
+        />
+      </ion-slide>
+      <ion-slide>
+        <img
+          style="min-width: 50%; max-width: 50% !important"
+          alt="Sprite de costas shiny"
+          src="{{details.sprites.back_shiny}}"
+        />
+      </ion-slide>
+    </ion-slides>
+    <ion-card-header>
+      <ion-card-title
+        >{{details.id}}. {{details.name | titlecase}}</ion-card-title
+      >
+      <ion-card-subtitle
+        ><span *ngFor="let types of details.types"
+          ><img
+            style="margin: 6px"
+            width="15%"
+            src="../../../assets/types-icon/{{types.type.name}}.png"
+            alt="" /></span
+      ></ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content style="border-top: 1px solid var(--ion-color-light)">
+      <div
+        *ngFor="let stats of details.stats"
+        style="
+          text-align: left !important;
+          display: flex;
+          justify-content: space-between;
+          margin-top: 12px;
+        "
+      >
+        <div>{{stats.stat.name | titlecase}}</div>
+        <div>
+          {{stats.base_stat}}
+          <!-- <progress value="{{stats.base_stat}}" max="200">
+            {{stats.base_stat}}
+          </progress>
+          200 -->
+        </div>
+      </div>
+      <div
+        style="border-top: 1px solid var(--ion-color-light); margin-top: 8px"
+      >
+        <div
+          style="display: flex; justify-content: space-between; margin-top: 8px"
+        >
+          <div
+            (click)="details.id > 1 ? getPokemonDetails(pokemonList[details.id - 2].id) : ''"
+          >
+            <p>Anterior</p>
+            <img
+              src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{details.id > 1 ? pokemonList[details.id - 2].id : '0'}}.png"
+              alt=""
+            />
+            <p>
+              {{details.id > 1 ? (pokemonList[details.id - 2].name | titlecase)
+              : 'Nenhum'}}
+            </p>
+          </div>
+
+          <div
+            (click)="details.id < 151 ? getPokemonDetails(pokemonList[details.id].id) : ''"
+          >
+            <p>Próximo</p>
+            <img
+              src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{details.id < 151 ? pokemonList[details.id].id : '0'}}.png"
+              alt=""
+            />
+            <p>
+              {{details.id < 151 ? (pokemonList[details.id].name | titlecase) :
+              'Nenhum'}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- <div style="border-top: 1px solid var(--ion-color-dark); margin-top: 8px; margin-bottom: 8px;">
+        <div>
+          <p>Pode aprender:</p>
+          <span *ngFor="let moves of details.moves">{{moves.move.name | titlecase}} </span>
+        </div>
+      </div> -->
+    </ion-card-content>
+  </ion-card>
+</ion-content>
