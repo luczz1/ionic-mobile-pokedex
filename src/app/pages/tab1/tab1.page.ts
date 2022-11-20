@@ -54,6 +54,7 @@ export class Tab1Page implements OnInit {
     this.pokedex.getPokemonDetails(id).subscribe(
       (value: any) => {
         this.pokemonDetails.push(value);
+        console.log(this.pokemonDetails);
         this.generic.showLoading(false);
       },
       (err) => {

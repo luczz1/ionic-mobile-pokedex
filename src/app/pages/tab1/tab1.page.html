@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="danger">
     <ion-title> Pokédex </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -7,6 +7,7 @@
 <ion-content [fullscreen]="true" [hidden]="showDetails">
   <ion-searchbar
     (ionChange)="filterPokemonList($event)"
+    class="ion-padding"
     placeholder="Pesquisar por nome..."
     color="light"
   ></ion-searchbar>
@@ -14,16 +15,29 @@
     <ion-row>
       <ion-col
         class="ion-padding"
-        style="border-bottom: 1px solid var(--ion-color-light);"
-        size="4"
-        *ngFor="let poke of filteredPokemonList.length > 0 ? filteredPokemonList : pokemonList; index as i"
-        (click)="getPokemonDetails(poke.id)"
+        style="border-bottom: 1px solid var(--ion-color-light)"
       >
-        <p style="font-size: 14px;">{{poke.name | titlecase}}</p>
-        <img
-          src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{poke.id}}.png"
-          alt=""
-        />
+        <ion-item fill="light"
+          *ngFor="let poke of filteredPokemonList.length > 0 ? filteredPokemonList : pokemonList;"
+          (click)="getPokemonDetails(poke.id)"
+          lines="none"
+        >
+          <ion-img
+            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{poke.id}}.png"
+            alt=""
+          ></ion-img>
+          <p
+            style="
+              font-size: 14px;
+              background-color: var(--ion-color-light-tint);
+              padding: 10px;
+              width: 100%;
+              border-radius: 8px;
+            "
+          >
+            {{poke.id}}. {{poke.name | titlecase}}
+          </p>
+        </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -31,10 +45,14 @@
 
 <ion-content [fullscreen]="true" *ngIf="showDetails">
   <!-- *ngFor="let poke of pokemonDetails; -->
-  <ion-button class="button-transparent" (click)="toggleShowDetails()"
-    ><ion-icon name="arrow-back-outline"></ion-icon
-  ><span style="text-indent: 8px; text-transform: capitalize !important;">Voltar</span></ion-button>
+
   <ion-card *ngFor="let details of pokemonDetails" class="ion-text-center">
+    <ion-button class="button-transparent" (click)="toggleShowDetails()"
+      ><ion-icon name="arrow-back-outline"></ion-icon
+      ><span style="text-indent: 8px; text-transform: capitalize !important"
+        >Voltar</span
+      ></ion-button
+    >
     <ion-slides pager="true">
       <ion-slide>
         <img
@@ -76,7 +94,10 @@
             width="15%"
             src="../../../assets/types-icon/{{types.type.name}}.png"
             alt="" /></span
-      ></ion-card-subtitle>
+      >
+      <p *ngFor="let ability of details.abilities"
+        >{{ability.ability.name | titlecase}}</p
+    ></ion-card-subtitle>
     </ion-card-header>
 
     <ion-card-content style="border-top: 1px solid var(--ion-color-light)">
