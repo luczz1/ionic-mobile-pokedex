@@ -48,8 +48,10 @@ export class Tab1Page implements OnInit {
         });
         console.log(this.pokemonList)
         this.pokemonList.sort((a,b) => Number(a.id) > Number(b.id) ? 1 : -1);
-        const last = this.pokemonList.findIndex(x => x.id == 899)
-        this.pokemonList.splice(last)
+        if (this.currentGeneration == 8) {
+          const last = this.pokemonList.findIndex(x => x.id == 899)
+          this.pokemonList.splice(last)
+        }
         this.generic.showLoading(false);
       },
       (err) => {
