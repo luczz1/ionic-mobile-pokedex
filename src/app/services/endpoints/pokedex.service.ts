@@ -22,4 +22,16 @@ export class PokedexService extends BaseService {
       headers: this.Headers(),
     });
   }
+
+  public getTypesDetails(url: string): Observable<any> {
+    return this.http.get(`${url}`, {
+      headers: this.Headers(),
+    });
+  }
+
+  public getAbilityDetails(url: string): Observable<any> {
+    return this.http.get(`${url}`, {
+      headers: this.Headers(),
+    });
+  }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 import { ModelPokedex } from 'src/app/models/pokedex.model';
 import { PokedexService } from 'src/app/services/endpoints/pokedex.service';
 import { GenericService } from 'src/app/services/generic.service';
@@ -13,11 +13,14 @@ export class Tab1Page implements OnInit {
   public pokemonList: ModelPokedex[] = [];
   public filteredPokemonList: ModelPokedex[] = [];
   public pokemonDetails: any[] = [];
+  public typeList: any[] = [];
+  public abilityList: any[] = [];
   public showDetails: boolean = false;
 
   constructor(
     private pokedex: PokedexService,
-    private generic: GenericService
+    private generic: GenericService,
+    private modalCtrl: ModalController
   ) {}
 
   ngOnInit(): void {
@@ -54,11 +57,40 @@ export class Tab1Page implements OnInit {
     this.pokedex.getPokemonDetails(id).subscribe(
       (value: any) => {
         this.pokemonDetails.push(value);
-        console.log(this.pokemonDetails);
         this.generic.showLoading(false);
       },
       (err) => {
         this.generic.showLoading(false);
+        this.generic.presentToast('Erro na conexão com o servidor.');
+      }
+    );
+  }
+
+  public getTypeDetails(url: string): void {
+    this.typeList = [];
+
+    this.generic.showLoading(true);
+    this.pokedex.getTypesDetails(url).subscribe(
+      (value: any) => {
+        this.typeList.push(value);
+        this.generic.showLoading(false);
+      },
+      (err) => {
+        this.generic.showLoading(false);
+        this.generic.presentToast('Erro na conexão com o servidor.');
+      }
+    );
+  }
+
+  public getAbilityDetails(url: string): void {
+    this.abilityList = [];
+
+    this.pokedex.getTypesDetails(url).subscribe(
+      (value: any) => {
+        this.abilityList.push(value);
+        console.log(this.abilityList);
+      },
+      (err) => {
         this.generic.presentToast('Erro na conexão com o servidor.');
       }
     );
@@ -74,5 +106,9 @@ export class Tab1Page implements OnInit {
 
   public toggleShowDetails() {
     this.showDetails = !this.showDetails;
+  }
+
+  public closeModal() {
+    this.modalCtrl.dismiss();
   }
 }
