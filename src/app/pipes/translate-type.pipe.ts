@@ -38,7 +38,7 @@ export class TranslateTypePipe implements PipeTransform {
         return 'Dragão';
       case 'dark':
         return 'Sombrio';
-      case 'fairy ':
+      case 'fairy':
         return 'Fada';
       default:
         return value;

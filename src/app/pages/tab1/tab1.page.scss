@@ -1,0 +1,22 @@
+select {
+  border: none;
+  width: 40px;
+  height: 30px;
+}
+
+.gen-div {
+  background: var(--ion-color-light);
+  width: 85%;
+  margin: auto;
+  padding: 6px;
+  text-align: center;
+  border-radius: 8px;
+}
+
+.dex-name-style {
+  font-size: 14px;
+  background-color: var(--ion-color-light-tint);
+  padding: 10px;
+  width: 100%;
+  border-radius: 8px;
+}

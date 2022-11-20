@@ -16,6 +16,7 @@ export class Tab1Page implements OnInit {
   public typeList: any[] = [];
   public abilityList: any[] = [];
   public showDetails: boolean = false;
+  public currentGeneration: number = 1;
 
   constructor(
     private pokedex: PokedexService,
@@ -24,22 +25,31 @@ export class Tab1Page implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getAllPokemon();
+    this.getAllPokemon('1');
   }
 
-  public getAllPokemon(): void {
+  public getAllPokemon(gen: string): void {
+    const generation = Number(gen)
+    this.currentGeneration = generation;
+    this.pokemonList = [];
+
     this.showDetails = false;
-    let index = 1;
     this.generic.showLoading(true);
-    this.pokedex.getAllPokemon().subscribe(
+    this.pokedex.getAllPokemon(generation).subscribe(
       (value) => {
-        Object.values(value.results).forEach((element: any) => {
+        console.log(value)
+        Object.values(value.pokemon_species).forEach((element: any) => {
+          const id = element.url.split('pokemon-species')[1].replaceAll('/', '').trim()
+
           this.pokemonList.push({
-            id: index,
+            id,
             name: element.name,
           });
-          index++;
         });
+        console.log(this.pokemonList)
+        this.pokemonList.sort((a,b) => Number(a.id) > Number(b.id) ? 1 : -1);
+        const last = this.pokemonList.findIndex(x => x.id == 899)
+        this.pokemonList.splice(last)
         this.generic.showLoading(false);
       },
       (err) => {
@@ -58,6 +68,7 @@ export class Tab1Page implements OnInit {
       (value: any) => {
         this.pokemonDetails.push(value);
         this.generic.showLoading(false);
+        console.log(this.pokemonDetails)
       },
       (err) => {
         this.generic.showLoading(false);
@@ -74,6 +85,7 @@ export class Tab1Page implements OnInit {
       (value: any) => {
         this.typeList.push(value);
         this.generic.showLoading(false);
+        console.log(this.typeList)
       },
       (err) => {
         this.generic.showLoading(false);

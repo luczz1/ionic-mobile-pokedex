@@ -11,8 +11,8 @@ export class PokedexService extends BaseService {
     super();
   }
 
-  public getAllPokemon(): Observable<any> {
-    return this.http.get(`${this.Basepath()}pokemon?limit=151`, {
+  public getAllPokemon(gen: number): Observable<any> {
+    return this.http.get(`${this.Basepath()}generation/${gen}`, {
       headers: this.Headers(),
     });
   }
