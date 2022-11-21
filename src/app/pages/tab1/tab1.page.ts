@@ -17,6 +17,7 @@ export class Tab1Page implements OnInit {
   public abilityList: any[] = [];
   public showDetails: boolean = false;
   public currentGeneration: number = 1;
+  public abilityLoading: boolean = false;
 
   constructor(
     private pokedex: PokedexService,
@@ -25,12 +26,14 @@ export class Tab1Page implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getAllPokemon('1');
+    const gen: any = localStorage.getItem('currentGen') ? localStorage.getItem('currentGen') : '1';
+    this.getAllPokemon(gen);
   }
 
   public getAllPokemon(gen: string): void {
     const generation = Number(gen)
     this.currentGeneration = generation;
+    localStorage.setItem('currentGen', String(this.currentGeneration));
     this.pokemonList = [];
 
     this.showDetails = false;
@@ -98,14 +101,16 @@ export class Tab1Page implements OnInit {
 
   public getAbilityDetails(url: string): void {
     this.abilityList = [];
+    this.abilityLoading = true;
 
     this.pokedex.getTypesDetails(url).subscribe(
       (value: any) => {
         this.abilityList.push(value);
-        console.log(this.abilityList);
+        this.abilityLoading = false;
       },
       (err) => {
         this.generic.presentToast('Erro na conexão com o servidor.');
+        this.abilityLoading = false;
       }
     );
   }

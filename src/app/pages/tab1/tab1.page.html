@@ -13,16 +13,16 @@
   ></ion-searchbar>
   <div class="gen-div">
     Geração:
-        <select (change)="getAllPokemon(selectGen.value)" #selectGen>
-          <option value="1" [selected]="currentGeneration === 1">1</option>
-          <option value="2" [selected]="currentGeneration === 2">2</option>
-          <option value="3" [selected]="currentGeneration === 3">3</option>
-          <option value="4" [selected]="currentGeneration === 4">4</option>
-          <option value="5" [selected]="currentGeneration === 5">5</option>
-          <option value="6" [selected]="currentGeneration === 6">6</option>
-          <option value="7" [selected]="currentGeneration === 7">7</option>
-          <option value="8" [selected]="currentGeneration === 8">8</option>
-        </select>
+    <select (change)="getAllPokemon(selectGen.value)" #selectGen>
+      <option value="1" [selected]="currentGeneration === 1">1</option>
+      <option value="2" [selected]="currentGeneration === 2">2</option>
+      <option value="3" [selected]="currentGeneration === 3">3</option>
+      <option value="4" [selected]="currentGeneration === 4">4</option>
+      <option value="5" [selected]="currentGeneration === 5">5</option>
+      <option value="6" [selected]="currentGeneration === 6">6</option>
+      <option value="7" [selected]="currentGeneration === 7">7</option>
+      <option value="8" [selected]="currentGeneration === 8">8</option>
+    </select>
   </div>
   <ion-grid class="ion-text-center">
     <ion-row>
@@ -31,7 +31,11 @@
         style="border-bottom: 1px solid var(--ion-color-light)"
       >
         <ion-item
-          style="padding: 4px; --background: var(--ion-color-light); --border-radius: 8px;"
+          style="
+            padding: 4px;
+            --background: var(--ion-color-light);
+            --border-radius: 8px;
+          "
           *ngFor="let poke of filteredPokemonList.length > 0 ? filteredPokemonList : pokemonList;"
           (click)="getPokemonDetails(poke.id)"
           lines="none"
@@ -41,10 +45,7 @@
             alt=""
             width="25%"
           />
-          <p class="dex-name-style"
-          >
-            {{poke.id}}. {{poke.name | titlecase}}
-          </p>
+          <p class="dex-name-style">{{poke.id}}. {{poke.name | titlecase}}</p>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -271,14 +272,34 @@
             triggerAction="click"
           >
             <ng-template>
+              <span *ngIf="abilityLoading">Carregando...</span>
+              <span *ngIf="!abilityLoading && abilityList.length <= 0"
+                >Não foi possível recuperar a descrição dessa habilidade.</span
+              >
               <div *ngFor="let abilityDesc of abilityList">
                 <div
+                  *ngIf="abilityDesc.effect_entries.length > 0"
                   style="padding: 4px; overflow-y: auto; max-height: 80px"
-                  *ngFor="let entries of abilityDesc.effect_entries; index as i"
                 >
-                  <span *ngIf="entries.language.name === 'en'"
-                    >{{entries.effect}}</span
+                  <div
+                    *ngFor="let entries of abilityDesc.effect_entries; index as i"
                   >
+                    <span *ngIf="entries.language.name === 'en'"
+                      >{{entries.effect}}</span
+                    >
+                  </div>
+                </div>
+                <div
+                  *ngIf="abilityDesc.effect_entries.length <= 0"
+                  style="padding: 4px; overflow-y: auto; max-height: 80px"
+                >
+                  <div
+                    *ngFor="let flavor_entries of abilityDesc.flavor_text_entries; index as i"
+                  >
+                    <span *ngIf="flavor_entries.language.name === 'en'"
+                      >{{flavor_entries.flavor_text}}</span
+                    >
+                  </div>
                 </div>
               </div>
             </ng-template>
@@ -298,9 +319,7 @@
         "
       >
         <div>{{stats.stat.name | titlecase}}</div>
-        <div>
-          {{stats.base_stat}}
-        </div>
+        <div>{{stats.base_stat}}</div>
       </div>
       <div
         style="
